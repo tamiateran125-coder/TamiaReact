@@ -1,40 +1,28 @@
-
-
-import React, { useState } from 'react';
-//props a recibir nombre, precio descuento, y agregar
-
+import { useState } from 'react';
 
 function TarjetaOferta({ nombre, precio, descuento, agregar }) { 
-
-    const [descuento, setDescuento] = useState(0);
-    
-    // valor del descuento
+    // Valor del descuento
     const valorDescuento = precio * (descuento / 100);
-    // precio final
+    // Precio final sin IVA
     const precioFinal = precio - valorDescuento;
-    // iva
+    // IVA (15%)
     const iva = precioFinal * 0.15;
-    // precio final con iva
+    // Precio final con IVA incluido
     const precioFinalConIva = precioFinal + iva;
-
-    function agregarProducto() {
-        agregar(nombre, precio);
-        
-    }
 
     let colorstock;
     if (descuento > 10) {
         colorstock = 'bg-danger';
-   } else {
-    //color gris
-        colorstock = 'bg-';
+    } else {
+        colorstock = 'bg-secondary';
     }
 
+    // Función que envía el nombre y el precio final con descuento (y su IVA)
+    const agregarProducto = () => {
+        agregar(nombre, precioFinalConIva);
+    };
+
     return (
-        //arriba de la tarjeta... cuanto ahorra con un ciclo for, cuanto se ahorra si compra uno de cada producto
-
-
-        //tarjetaOferta 
         <div className="card h-100 shadow-sm border-0 rounded-4 p-2">
             <div className="card-body d-flex flex-column">
                 <h5 className="card-title fw-bold text-dark">{nombre}</h5>
@@ -45,24 +33,21 @@ function TarjetaOferta({ nombre, precio, descuento, agregar }) {
                 <p className="card-text fw-bold text-primary mb-2">Total IVA: ${precioFinalConIva.toFixed(2)}</p>
 
                 <div className="mb-3 d-flex gap-1 flex-wrap">
-                    
                     <span className={`badge ${colorstock}`}>
                         {descuento > 10 ? `Gran oferta` : 'Oferta'}
                     </span>
                 </div>
                 
+                {/* Botón con la función correcta para enviar el precio con descuento */}
                 <button 
-                
-
-                        onClick={agregarProducto}
-                        className="btn btn-success btn-sm w-100 fw-semibold rounded-pill py-2 shadow-sm"
-                    >
-                        🛒 Agregar
+                    onClick={agregarProducto}
+                    className="btn btn-success btn-sm w-100 fw-semibold rounded-pill py-2 shadow-sm"
+                >
+                    🛒 Agregar
                 </button>
-            
             </div>
         </div>
-    )
-
-
+    );
 }
+
+export default TarjetaOferta;
