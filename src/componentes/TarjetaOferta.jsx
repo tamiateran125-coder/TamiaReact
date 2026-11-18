@@ -10,6 +10,12 @@ function TarjetaOferta({ nombre, precio, descuento, agregar }) {
     // Precio final con IVA incluido
     const precioFinalConIva = precioFinal + iva;
 
+    // --- CICLO FOR PARA CALCULAR EL AHORRO ---
+    let ahorroTotalAcumulado = 0;
+    for (let i = 1; i <= 3; i++) {
+        ahorroTotalAcumulado += valorDescuento;
+    }
+
     let colorstock;
     if (descuento > 10) {
         colorstock = 'bg-danger';
@@ -17,14 +23,24 @@ function TarjetaOferta({ nombre, precio, descuento, agregar }) {
         colorstock = 'bg-secondary';
     }
 
-    // Función que envía el nombre y el precio final con descuento (y su IVA)
-    const agregarProducto = () => {
+    // Función tradicional para enviar el nombre y el precio final con descuento
+    function agregarProducto() {
         agregar(nombre, precioFinalConIva);
-    };
+    }
 
     return (
         <div className="card h-100 shadow-sm border-0 rounded-4 p-2">
             <div className="card-body d-flex flex-column">
+                
+                {/* 🛒 INDICADOR DE AHORRO (ARRIBA DE LA TARJETA) */}
+                <div className="alert alert-success py-1 px-2 small mb-2 text-center fw-semibold">
+                    ¡Ahorras ${valorDescuento.toFixed(2)} por unidad! 
+                    <br />
+                    <span className="text-muted" style={{ fontSize: '0.8rem' }}>
+                        (Ahorro por 3 u: ${ahorroTotalAcumulado.toFixed(2)})
+                    </span>
+                </div>
+
                 <h5 className="card-title fw-bold text-dark">{nombre}</h5>
                 <p className="card-text mb-1 text-muted small">Antes: ${precio.toFixed(2)}</p>
                 <p className="card-text mb-1 text-muted small">Descuento: {descuento}%</p>
@@ -38,7 +54,6 @@ function TarjetaOferta({ nombre, precio, descuento, agregar }) {
                     </span>
                 </div>
                 
-                {/* Botón con la función correcta para enviar el precio con descuento */}
                 <button 
                     onClick={agregarProducto}
                     className="btn btn-success btn-sm w-100 fw-semibold rounded-pill py-2 shadow-sm"
